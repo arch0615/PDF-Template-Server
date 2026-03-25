@@ -288,7 +288,7 @@ export function generateHtml(data) {
     <div class="header">
       <div class="logo">
         <div class="logo-graphic"><div class="logo-tri-left"></div><div class="logo-tri-right"></div></div>
-        <div class="logo-text"><strong>HPK RECYCLING</strong><span>Rethinking the future of waste</span></div>
+        <div class="logo-text"><strong>NATIONWIDE WASTE & RECYCLING LIMITED</strong><span>Rethinking the future of waste</span></div>
       </div>
       <div class="company-info">
         <strong>Nationwide Waste &amp; Recycling Limited</strong><br>
@@ -297,7 +297,7 @@ export function generateHtml(data) {
         Tel: 0800 1123443
       </div>
     </div>
-    <div class="license">Registered Waste Carriers License No. CBDU 448313</div>
+    <div class="license">Registered Waste Carriers License No. CBDU620435</div>
   </div>
 
   <!-- ACCOUNTS: 9/24 -->
@@ -409,7 +409,7 @@ export function generateHtml(data) {
     <div class="header">
       <div class="logo">
         <div class="logo-graphic"><div class="logo-tri-left"></div><div class="logo-tri-right"></div></div>
-        <div class="logo-text"><strong>HPK RECYCLING</strong><span>Rethinking the future of waste</span></div>
+        <div class="logo-text"><strong>NATIONWIDE WASTE & RECYCLING LIMITED</strong><span>Rethinking the future of waste</span></div>
       </div>
       <div class="company-info">
         <strong>Nationwide Waste &amp; Recycling Limited</strong><br>
@@ -418,7 +418,7 @@ export function generateHtml(data) {
         Tel: 0800 1123443
       </div>
     </div>
-    <div class="license">Registered Waste Carriers License No. CBDU 448313</div>
+    <div class="license">Registered Waste Carriers License No. CBDU620435</div>
   </div>
 
   <!-- INVOICING: 2/24 -->
@@ -520,7 +520,7 @@ export function generateHtml(data) {
   <div class="sec-auth">
     <div class="section-header">Authorisation</div>
     <div class="section">
-      <div class="note">Unless otherwise agreed above, the initial service period will be for 52 weeks. HPK Recycling Limited standard terms and conditions apply. Terms and conditions printed on reverse.</div>
+      <div class="note">Unless otherwise agreed above, the initial service period will be for 52 weeks. Nationwide Waste & Recycling Limited standard terms and conditions apply. Terms and conditions printed on reverse.</div>
       <div class="row sig-row">
         <div class="field flex-1"><span class="field-label">Signature (supplier)</span><span class="field-value"></span></div>
         <div class="field flex-1"><span class="field-label">Signature (customer)</span><span class="field-value"></span></div>
