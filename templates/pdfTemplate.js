@@ -1,4 +1,11 @@
 export function generateHtml(data) {
+  // Ensure nested objects are actual objects (frontend may send strings)
+  const ensureObj = (val) => {
+    if (val && typeof val === 'object' && !Array.isArray(val)) return val;
+    if (typeof val === 'string') { try { const p = JSON.parse(val); return typeof p === 'object' && !Array.isArray(p) ? p : {}; } catch { return {}; } }
+    return {};
+  };
+
   const d = {
     companyName: '', tradingAs: '', regNumber: '', proprietorPartnerName: '',
     invoiceAddress1: '', invoiceAddress2: '', invoiceAddress3: '',
@@ -14,7 +21,8 @@ export function generateHtml(data) {
     initialServiceTermWeeks: '', paymentMethod: {}, inAdvanceWeeks: '',
     producer: '', wasteProcess: '', transferNoteFrom: '', transferNoteTo: '',
     wasteTypes: {}, segregateWaste: '', recoveredItems: {},
-    recoveredOther1: '', recoveredOther2: '',
+    recoveredOther1: '', recoveredOther1Checked: false,
+    recoveredOther2: '', recoveredOther2Checked: false,
     healthSafety: {},
     supplierPrintName: '', customerPrintName: '',
     supplierPosition: '', customerPosition: '',
@@ -22,19 +30,41 @@ export function generateHtml(data) {
     ...data,
   };
 
+  // Normalize nested objects in case frontend sent them as strings or other formats
+  d.businessType = ensureObj(d.businessType);
+  d.paymentMethod = ensureObj(d.paymentMethod);
+  d.wasteTypes = ensureObj(d.wasteTypes);
+  d.recoveredItems = ensureObj(d.recoveredItems);
+  d.healthSafety = ensureObj(d.healthSafety);
+
   // --- Placeholder redistribution — actual pixel-based splitting done after render ---
   const invoiceAddr = [d.invoiceAddress1, d.invoiceAddress2, d.invoiceAddress3];
   const proprietorAddr = [d.proprietorHomeAddress1, d.proprietorHomeAddress2];
   const collectionAddr = [d.collectionSiteAddress1, d.collectionSiteAddress2];
   const specialCond = [d.specialConditions1, d.specialConditions2, d.specialConditions3, d.specialConditions4, d.specialConditions5];
 
-  const checked = (val) => val ? '&#10003;' : '';
+  const isTruthy = (val) => val === true || val === 'true' || val === 'on' || val === '1' || val === 1;
+  const checked = (val) => (val && val !== 'false' && val !== '0') ? '&#10003;' : '';
   const bt = (type) => d.businessType?.[type] ? '&#10003;' : '';
   const pm = (type) => d.paymentMethod?.[type] ? '&#10003;' : '';
   const wt = (key) => d.wasteTypes?.[key] ? '&#10003;' : '';
   const ri = (key) => d.recoveredItems?.[key] ? '&#10003;' : '';
-  const hs = (key, val) => d.healthSafety?.[key] === val ? '&#10003;' : '';
-  const seg = (val) => d.segregateWaste === val ? '&#10003;' : '';
+  const hs = (key, val) => {
+    const v = d.healthSafety?.[key];
+    if (v === val) return '&#10003;';
+    // Handle boolean: true → 'yes', false → 'no'
+    if (val === 'yes' && isTruthy(v)) return '&#10003;';
+    if (val === 'no' && (v === false || v === 'false' || v === '0')) return '&#10003;';
+    return '';
+  };
+  const seg = (val) => {
+    const v = d.segregateWaste;
+    if (v === val) return '&#10003;';
+    // Handle boolean: true → 'yes', false → 'no'
+    if (val === 'yes' && isTruthy(v)) return '&#10003;';
+    if (val === 'no' && (v === false || v === 'false' || v === '0')) return '&#10003;';
+    return '';
+  };
 
   const rows = d.serviceRows || [];
   const tableBodyRows = Array.from({ length: 5 }, (_, i) => {
