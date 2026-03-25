@@ -44,25 +44,26 @@ export function generateHtml(data) {
   const specialCond = [d.specialConditions1, d.specialConditions2, d.specialConditions3, d.specialConditions4, d.specialConditions5];
 
   const isTruthy = (val) => val === true || val === 'true' || val === 'on' || val === '1' || val === 1;
-  const checked = (val) => (val && val !== 'false' && val !== '0') ? '&#10003;' : '';
-  const bt = (type) => d.businessType?.[type] ? '&#10003;' : '';
-  const pm = (type) => d.paymentMethod?.[type] ? '&#10003;' : '';
-  const wt = (key) => d.wasteTypes?.[key] ? '&#10003;' : '';
-  const ri = (key) => d.recoveredItems?.[key] ? '&#10003;' : '';
+  const CHECK = '<span class="cb-tick"></span>';
+  const checked = (val) => (val && val !== 'false' && val !== '0') ? CHECK : '';
+  const bt = (type) => d.businessType?.[type] ? CHECK : '';
+  const pm = (type) => d.paymentMethod?.[type] ? CHECK : '';
+  const wt = (key) => d.wasteTypes?.[key] ? CHECK : '';
+  const ri = (key) => d.recoveredItems?.[key] ? CHECK : '';
   const hs = (key, val) => {
     const v = d.healthSafety?.[key];
-    if (v === val) return '&#10003;';
+    if (v === val) return CHECK;
     // Handle boolean: true → 'yes', false → 'no'
-    if (val === 'yes' && isTruthy(v)) return '&#10003;';
-    if (val === 'no' && (v === false || v === 'false' || v === '0')) return '&#10003;';
+    if (val === 'yes' && isTruthy(v)) return CHECK;
+    if (val === 'no' && (v === false || v === 'false' || v === '0')) return CHECK;
     return '';
   };
   const seg = (val) => {
     const v = d.segregateWaste;
-    if (v === val) return '&#10003;';
+    if (v === val) return CHECK;
     // Handle boolean: true → 'yes', false → 'no'
-    if (val === 'yes' && isTruthy(v)) return '&#10003;';
-    if (val === 'no' && (v === false || v === 'false' || v === '0')) return '&#10003;';
+    if (val === 'yes' && isTruthy(v)) return CHECK;
+    if (val === 'no' && (v === false || v === 'false' || v === '0')) return CHECK;
     return '';
   };
 
@@ -225,11 +226,15 @@ export function generateHtml(data) {
     width: 13px; height: 13px;
     border: 1.5px solid #555;
     border-radius: 2px;
-    font-size: 10px;
-    line-height: 1;
     flex-shrink: 0;
-    color: #1a365d;
-    font-weight: 700;
+  }
+  .cb-tick {
+    display: block;
+    width: 7px; height: 4px;
+    border-left: 2px solid #1a365d;
+    border-bottom: 2px solid #1a365d;
+    transform: rotate(-45deg);
+    margin-top: -1px;
   }
 
   /* ===== Schedule table ===== */
