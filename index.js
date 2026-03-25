@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { pdfRouter } from './routes/pdf.js';
+import { templatesRouter } from './routes/templates.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
@@ -38,6 +39,7 @@ if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
+app.use('/api/templates', templatesRouter);
 app.use('/api/pdf', pdfRouter);
 
 if (!isVercel) {
