@@ -148,7 +148,7 @@ export function generateHtml(data) {
   /* ===== Sections ===== */
   .section-header {
     background: #edf0f3;
-    padding: 4px 24px;
+    padding: 4px 1cm;
     font-size: 12px;
     font-weight: 700;
     color: #1a1a1a;
@@ -156,7 +156,7 @@ export function generateHtml(data) {
     border-top: 1px solid #d0d5da;
     flex-shrink: 0;
   }
-  .section { padding: 5px 24px 6px; }
+  .section { padding: 5px 1cm 6px; }
 
   /* ===== Fixed-height sections for Page 2 — matched to web form percentages ===== */
   .sec-invoicing   { height: 9.22%; }
@@ -232,8 +232,8 @@ export function generateHtml(data) {
   .inv-table {
     border-collapse: collapse;
     border: 1.5px solid #888;
-    margin: 6px 24px 3px;
-    width: calc(100% - 48px);
+    margin: 6px 1cm 3px;
+    width: calc(100% - 2cm);
     font-size: 10px;
   }
   .inv-table td { border: 1px solid #aaa; padding: 5px 8px; vertical-align: middle; }
@@ -440,7 +440,7 @@ export function generateHtml(data) {
         <td class="inv-no-top"><div style="display:flex;align-items:flex-end;gap:5px"><span class="field-value" style="flex:1">${d.initialServiceTermWeeks}</span><span>Week(s)</span></div></td>
       </tr>
     </table>
-    <div style="font-size:8px;color:#666;font-style:italic;padding:1px 24px">Standard credit means payment is due 7 days from invoice date.</div>
+    <div style="font-size:8px;color:#666;font-style:italic;padding:1px 1cm">Standard credit means payment is due 7 days from invoice date.</div>
   </div>
 
   <!-- WASTE SCHEDULE: 4/24 -->
