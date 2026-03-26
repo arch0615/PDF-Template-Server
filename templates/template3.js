@@ -1,39 +1,31 @@
-import fs from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const logoPath = join(__dirname, '..', 'logo3.png');
-let logoBase64 = '';
-try {
-  logoBase64 = fs.readFileSync(logoPath).toString('base64');
-} catch (e) { /* logo not found */ }
-
 export function generateHtmlTemplate3(data) {
   const d = {
     quoteDate: '', quoteRef: '', customerName: '', validDays: '',
-    serviceRows: [], contractTerms: '', pricingNotes: '',
-    weeklyCharge: '', monthlyCharge: '', annualCharge: '', vatRate: '',
-    freephone: '', email: '',
+    wasteCollectionAddress: '', contractTerm: '',
+    serviceRows: [], pricingTitle: '', pricingNotes: '',
+    weeklyCharge: '', monthlyCharge: '', annualCharge: '',
+    freephone: '', freephoneHours: '', email: '', emailNote: '',
     ...data,
   };
 
   const rows = d.serviceRows || [];
-  const serviceRowsHtml = Array.from({ length: 4 }, (_, i) => {
-    const r = rows[i] || {};
-    return `<tr>
-      <td>${r.container || ''}</td>
-      <td>${r.containerSize || ''}</td>
-      <td>${r.quantity || ''}</td>
-      <td>${r.lifts || ''}</td>
-      <td>${r.wasteStream || ''}</td>
-    </tr>`;
-  }).join('');
+  const serviceRowsHtml = rows.map(r => `<tr>
+    <td>${r.item || ''}</td>
+    <td>${r.wasteType || ''}</td>
+    <td>${r.containerSizeType || ''}</td>
+    <td>${r.qty || ''}</td>
+    <td>${r.collectionFreq || ''}</td>
+    <td>${r.weightLimit || ''}</td>
+    <td>${r.liftRate || ''}</td>
+    <td>${r.priceTonne || ''}</td>
+    <td>${r.dailyRental || ''}</td>
+    <td>${r.wtnCharge || ''}</td>
+    <td class="tw">${r.totalWeekly || ''}</td>
+  </tr>`).join('');
 
-  const badgeImg = logoBase64
-    ? `<img src="data:image/png;base64,${logoBase64}" style="width:60px;height:60px;object-fit:contain" />`
-    : '';
+  const pricingLines = (d.pricingNotes || '').replace(/\n/g, '<br>');
+  const freephoneLines = (d.freephoneHours || '').replace(/\n/g, '<br>');
+  const emailLines = (d.emailNote || '').replace(/\n/g, '<br>');
 
   return `<!DOCTYPE html>
 <html>
@@ -51,149 +43,244 @@ export function generateHtmlTemplate3(data) {
     overflow: hidden;
   }
 
+  /* Fixed-height sections — scaled to ~96% */
+  .s-header   { height: 15.04%; flex-shrink: 0; }
+  .s-letter   { height: 6.32%;  flex-shrink: 0; }
+  .s-info     { height: 13%;    flex-shrink: 0; }
+  .s-service  { height: 22%;    flex-shrink: 0; }
+  .s-pricing  { height: 22%;    flex-shrink: 0; }
+  .s-bottom   { height: 17%;    flex-shrink: 0; margin-top: auto; }
+
   /* Header */
   .header {
     display: flex; justify-content: space-between; align-items: flex-start;
-    padding: 14px 1cm 10px;
+    padding: 12px 1cm;
+    height: 100%;
+    overflow: hidden;
   }
-  .header-left { display: flex; align-items: flex-start; gap: 20px; }
-  .biffa-logo {
-    background: #e31e24; color: white; font-size: 22px; font-weight: 900;
-    padding: 6px 14px; border-radius: 4px; font-style: italic;
-    line-height: 1;
+  .header-left {
+    display: flex; align-items: stretch; gap: 12px;
   }
-  .header-date { font-size: 10px; color: #555; padding-top: 4px; }
-  .header-right { display: flex; align-items: flex-start; gap: 12px; }
-  .company-info { font-size: 8px; color: #555; line-height: 1.5; text-align: right; }
-  .company-info strong { font-size: 9px; display: block; margin-bottom: 2px; }
+  .logo-col {
+    flex-shrink: 0; display: flex; align-items: stretch;
+  }
+  .nw-logo {
+    background: #e31e24; color: white; font-size: 24px; font-weight: 900;
+    font-style: italic; padding: 14px 18px; border-radius: 4px;
+    display: flex; align-items: center; line-height: 1;
+    min-height: 70px;
+  }
+  .title-col {
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .header-date { font-size: 10px; color: #555; }
+  .title-col-bottom {}
+  .quote-heading { font-size: 20px; font-weight: 900; color: #1a1a1a; margin: 0; }
+  .quote-ref { font-size: 12px; font-weight: 600; color: #555; }
+
+  .header-right { display: flex; align-items: flex-start; gap: 10px; }
+  .company-info { font-size: 9px; color: #555; line-height: 1.4; text-align: right; }
+  .company-info strong { font-size: 10px; display: block; margin-bottom: 2px; }
+
+  /* Badge - CSS triangle logo */
+  .badge { width: 80px; height: 80px; position: relative; }
+  .badge .tri-striped {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+    background: repeating-linear-gradient(45deg, rgba(255,255,255,0.85) 0px, rgba(255,255,255,0.85) 1.5px, #8a8f94 1.5px, #8a8f94 3.5px), #8a8f94;
+  }
+  .badge .tri-solid {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    background: #4f5152;
+  }
 
   /* Sections */
-  .sec { padding: 6px 1cm 8px; }
-
-  /* Quote title */
-  .quote-title { font-size: 18px; font-weight: 700; color: #1a1a1a; }
-  .quote-ref { font-size: 11px; color: #555; margin-top: 2px; }
+  .sec { padding: 4px 1cm 6px; }
 
   /* Letter */
-  .letter { font-size: 10px; margin-top: 10px; line-height: 1.6; }
+  .letter { font-size: 10px; line-height: 1.6; }
 
-  /* Sub header */
-  .sub-hdr { font-size: 10px; font-weight: 700; margin: 8px 0 4px; }
+  /* Info table (Address & Contract) */
+  .info-table { width: 100%; border-collapse: collapse; border: 1px solid #bbb; font-size: 10px; }
+  .info-table td { border: 1px solid #bbb; padding: 6px 10px; }
+  .info-label { font-weight: 700; width: 22%; background: #f5f5f5; white-space: nowrap; }
 
-  /* Service table */
-  .st { width: 100%; border-collapse: collapse; border: 1px solid #bbb; font-size: 10px; margin-top: 6px; }
-  .st th { padding: 5px 8px; text-align: left; font-weight: 600; font-size: 9px; border: 1px solid #bbb; background: #f5f5f5; }
-  .st td { border: 1px solid #ccc; padding: 4px 8px; }
+  /* Service table (11 columns) */
+  .st { width: 100%; border-collapse: collapse; border: 1px solid #999; font-size: 9px; }
+  .st th {
+    background: #f5f5f5; padding: 4px 3px; text-align: center; font-weight: 700;
+    font-size: 8px; border: 1px solid #999; white-space: pre-line; line-height: 1.3;
+    vertical-align: bottom; text-decoration: underline;
+  }
+  .st td { border: 1px solid #ccc; padding: 3px 4px; text-align: center; font-size: 9px; height: 24px; }
+  .st .tw { font-weight: 700; }
 
-  /* Field table */
-  .ft { border-collapse: collapse; border: 1px solid #bbb; font-size: 10px; }
-  .ft td { border: 1px solid #bbb; padding: 5px 10px; }
-
-  /* Pricing layout */
-  .pricing { display: flex; gap: 16px; margin-top: 6px; }
-  .pricing-notes { flex: 1; font-size: 9px; color: #555; line-height: 1.5; }
-  .pricing-summary { width: 180px; }
-  .price-label { font-weight: 700; font-size: 10px; text-align: right; padding-right: 10px; }
-  .price-value { font-size: 10px; font-weight: 600; }
-  .direct-debit { font-size: 8px; font-weight: 700; text-align: center; margin-top: 4px; color: #555; }
+  /* Pricing */
+  .pricing-layout { display: flex; gap: 20px; }
+  .pricing-notes { flex: 1; }
+  .pricing-title { font-size: 10px; font-weight: 700; font-style: italic; margin-bottom: 3px; }
+  .pricing-text { font-size: 9px; color: #333; line-height: 1.5; }
+  .pricing-summary { width: 180px; text-align: right; flex-shrink: 0; }
+  .price-row { display: flex; justify-content: flex-end; align-items: baseline; gap: 10px; }
+  .price-row-large { margin-bottom: 3px; }
+  .price-label-text { font-size: 10px; font-weight: 700; }
+  .price-amount-large { font-size: 18px; font-weight: 900; }
+  .price-amount { font-size: 12px; font-weight: 700; }
+  .vat-debit { font-size: 8px; font-weight: 900; text-align: right; margin-top: 4px; line-height: 1.5; }
 
   /* Bottom */
+  .bottom-row { display: flex; gap: 12px; align-items: stretch; }
   .ready-box {
-    display: inline-block; background: #4caf50; color: white;
-    padding: 6px 14px; font-size: 11px; font-weight: 700; border-radius: 3px;
-    margin-bottom: 8px;
+    background: #1a1a1a; color: white; padding: 12px 16px; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; white-space: nowrap; flex-shrink: 0;
   }
-  .contact-row { display: flex; gap: 24px; margin-top: 6px; font-size: 10px; }
-  .contact-label { font-weight: 700; margin-right: 6px; }
-  .acceptance { font-size: 9px; color: #666; margin-top: 8px; }
-
-  /* Footer */
-  .footer { margin-top: auto; }
+  .contact-box {
+    background: #d9d9d9; color: #1a1a1a; padding: 10px 16px;
+    width: 160px; flex-shrink: 0;
+  }
+  .contact-title { font-size: 11px; font-weight: 700; margin-bottom: 2px; }
+  .contact-highlight { font-size: 11px; font-weight: 700; color: #e31e24; text-decoration: underline; }
+  .contact-sub { font-size: 9px; color: #1a1a1a; margin-top: 2px; line-height: 1.4; }
 </style>
 </head>
 <body>
 
 <div class="page">
-  <!-- Header -->
-  <div class="header">
-    <div class="header-left">
-      <div class="biffa-logo">Biffa</div>
-      <div class="header-date">${d.quoteDate}</div>
-    </div>
-    <div class="header-right">
-      <div class="company-info">
-        <strong>Company Information</strong>
-        Biffa Group Limited, Coronation Road,<br>
-        Cressex Business Park, High Wycombe,<br>
-        HP12 3TZ<br>
-        VAT No: 621 611 84<br>
-        Company Registration No: 946 107
+  <!-- Header: 15.04% -->
+  <div class="s-header">
+    <div class="header">
+      <div class="header-left">
+        <div class="logo-col">
+          <div class="nw-logo">Nationwide</div>
+        </div>
+        <div class="title-col">
+          <div class="header-date">${d.quoteDate}</div>
+          <div class="title-col-bottom">
+            <div class="quote-heading">Quotation</div>
+            <div class="quote-ref">Ref: ${d.quoteRef}</div>
+          </div>
+        </div>
       </div>
-      ${badgeImg}
+      <div class="header-right">
+        <div class="company-info">
+          <strong>Company Information</strong>
+          Biffa Group Limited, Coronation Road,<br>
+          Cressex, High Wycombe, HP12 3TZ<br><br>
+          VAT No: 537 911 627<br>
+          Registration No: 06409675
+        </div>
+        <div class="badge">
+          <div class="tri-striped"></div>
+          <div class="tri-solid"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Quotation -->
-  <div class="sec">
-    <div class="quote-title">Quotation</div>
-    <div class="quote-ref">Ref: ${d.quoteRef}</div>
-
-    <div class="letter">
-      Dear ${d.customerName},<br>
-      We have pleasure in providing the following quotation which is valid for ${d.validDays} days.
+  <!-- Letter: 6.32% -->
+  <div class="s-letter">
+    <div class="sec">
+      <div class="letter">
+        Dear ${d.customerName},<br>
+        We have pleasure in providing the following quotation which is valid for ${d.validDays} days.
+      </div>
     </div>
   </div>
 
-  <!-- Service Table -->
-  <div class="sec">
+  <!-- Address & Contract: 12% -->
+  <div class="s-info">
+    <div class="sec">
+    <table class="info-table">
+      <tr><td class="info-label">Waste Collection Address</td><td>${d.wasteCollectionAddress}</td></tr>
+      <tr><td class="info-label">Contract Term</td><td>${d.contractTerm}</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <!-- Service Table: 18% -->
+  <div class="s-service">
+    <div class="sec">
     <table class="st">
       <thead>
         <tr>
-          <th>Container</th>
-          <th>Container Size</th>
-          <th>Quantity</th>
-          <th>Lifts</th>
-          <th>Waste Stream</th>
+          <th style="width:4%">Item</th>
+          <th style="width:12%">Waste Type</th>
+          <th style="width:14%">Container
+Size & Type</th>
+          <th style="width:4%">Qty</th>
+          <th style="width:10%">Collection
+Frequency</th>
+          <th style="width:8%">Weight
+Limit *</th>
+          <th style="width:10%">Lift Rate /
+Haulage †</th>
+          <th style="width:8%">Price
+per
+Tonne</th>
+          <th style="width:9%">Daily
+Container
+Rental</th>
+          <th style="width:9%">WTN
+Standard
+Charge ‡</th>
+          <th style="width:12%">Total Weekly
+Price</th>
         </tr>
       </thead>
       <tbody>${serviceRowsHtml}</tbody>
     </table>
+    </div>
   </div>
 
-  <!-- Contract Terms -->
-  <div class="sec">
-    <div class="sub-hdr">Contract Terms:</div>
-    <div style="font-size:10px">${d.contractTerms}</div>
-  </div>
-
-  <!-- Pricing -->
-  <div class="sec">
-    <div class="sub-hdr">Pricing and Service Charges, charges explained</div>
-    <div class="pricing">
-      <div class="pricing-notes">${d.pricingNotes}</div>
+  <!-- Pricing: 20% -->
+  <div class="s-pricing">
+    <div class="sec">
+    <div class="pricing-layout">
+      <div class="pricing-notes">
+        <div class="pricing-title">${d.pricingTitle || 'Pricing and Service Charges, simply explained'}</div>
+        <div class="pricing-text">${pricingLines}</div>
+      </div>
       <div class="pricing-summary">
-        <table class="ft">
-          <tr><td class="price-label">WEEKLY</td><td class="price-value">£${d.weeklyCharge}</td></tr>
-          <tr><td class="price-label">MONTHLY</td><td class="price-value">£${d.monthlyCharge}</td></tr>
-          <tr><td class="price-label">ANNUAL</td><td class="price-value">£${d.annualCharge}</td></tr>
-          <tr><td class="price-label">VAT at</td><td class="price-value">${d.vatRate}%</td></tr>
-        </table>
-        <div class="direct-debit">AND PAYABLE BY DIRECT DEBIT</div>
+        <div class="price-row price-row-large">
+          <span class="price-label-text">WEEKLY</span>
+          <span class="price-amount-large">£${d.weeklyCharge}</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label-text">MONTHLY</span>
+          <span class="price-amount">£${d.monthlyCharge}</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label-text">ANNUAL</span>
+          <span class="price-amount">£${d.annualCharge}</span>
+        </div>
+        <div class="vat-debit">
+          ALL RATES ARE SUBJECT TO VAT<br>
+          AND PAYABLE BY DIRECT DEBIT
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- Bottom: 16% -->
+  <div class="s-bottom">
+    <div class="sec">
+      <div class="bottom-row">
+        <div class="ready-box">Ready to set up<br>your account?</div>
+        <div class="contact-box">
+          <div class="contact-title">Freephone</div>
+          <div class="contact-highlight">${d.freephone}</div>
+          <div class="contact-sub">${freephoneLines}</div>
+        </div>
+        <div class="contact-box">
+          <div class="contact-title">E-Mail</div>
+          <div class="contact-highlight">${d.email}</div>
+          <div class="contact-sub">${emailLines}</div>
+        </div>
       </div>
     </div>
   </div>
-
-  <!-- Bottom -->
-  <div class="sec">
-    <div class="ready-box">Ready to set up your account?</div>
-    <div class="contact-row">
-      <div><span class="contact-label">Freephone</span>${d.freephone}</div>
-      <div><span class="contact-label">E-Mail</span>${d.email}</div>
-    </div>
-    <div class="acceptance">By returning a signed copy you are confirming your acceptance of this quote.</div>
-  </div>
-
-  <div class="footer"></div>
 </div>
 
 </body>
