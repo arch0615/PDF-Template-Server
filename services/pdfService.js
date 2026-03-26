@@ -5,6 +5,7 @@ import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { config } from '../config.js';
 import { generateHtml } from '../templates/pdfTemplate.js';
+import { generateHtmlTemplate2 } from '../templates/template2.js';
 
 let browser = null;
 
@@ -26,7 +27,10 @@ async function getBrowser() {
 }
 
 export async function generatePdf(formData) {
-  const html = generateHtml(formData);
+  const templateId = formData._templateId;
+  const html = templateId === 'first-mile-wtn'
+    ? generateHtmlTemplate2(formData)
+    : generateHtml(formData);
   const b = await getBrowser();
   const page = await b.newPage();
 

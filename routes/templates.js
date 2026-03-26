@@ -10,11 +10,10 @@ const templates = [
     pages: 2,
   },
   {
-    id: 'template-2',
-    name: 'Template 2',
-    description: 'Coming soon.',
-    pages: 0,
-    disabled: true,
+    id: 'first-mile-wtn',
+    name: 'First Mile - Waste Transfer Note',
+    description: 'Season Ticket Waste Transfer Note for waste carrier information, producer details, and transfer records.',
+    pages: 2,
   },
   {
     id: 'template-3',
