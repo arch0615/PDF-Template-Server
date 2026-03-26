@@ -175,8 +175,6 @@ export function generateHtmlTemplate2(data) {
     </div>
     <div class="header-right">
       Page 1 of 2<br>
-      Season Ticket WTN - Zia Lucia<br>
-      (Holloway Road) - 20-01-2026
     </div>
   </div>
 
@@ -242,9 +240,9 @@ export function generateHtmlTemplate2(data) {
   </div>
 
   <div class="p1-footer footer">
-    <span>First Mile Limited</span>
-    <span>0333 300 3448</span>
-    <span>www.thefirstmile.co.uk</span>
+    <span>Nationwide Waste &amp; Recycling Limited</span>
+    <span>0800 1123443</span>
+    <span>interactive-pdf-completion-template-ten.vercel.app</span>
   </div>
 </div>
 
@@ -257,8 +255,6 @@ export function generateHtmlTemplate2(data) {
     </div>
     <div class="header-right">
       Page 2 of 2<br>
-      Season Ticket WTN - Zia Lucia<br>
-      (Holloway Road) - 20-01-2026
     </div>
   </div>
 
@@ -305,9 +301,9 @@ export function generateHtmlTemplate2(data) {
   </div>
 
   <div class="p2-footer footer">
-    <span>First Mile Limited</span>
-    <span>0333 300 3448</span>
-    <span>www.thefirstmile.co.uk</span>
+    <span>Nationwide Waste &amp; Recycling Limited</span>
+    <span>0800 1123443</span>
+    <span>interactive-pdf-completion-template-ten.vercel.app</span>
   </div>
 </div>
 
