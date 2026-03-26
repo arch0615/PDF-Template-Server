@@ -11,16 +11,15 @@ const templates = [
   },
   {
     id: 'first-mile-wtn',
-    name: 'First Mile - Waste Transfer Note',
+    name: 'Season Ticket Waste Transfer Note',
     description: 'Season Ticket Waste Transfer Note for waste carrier information, producer details, and transfer records.',
     pages: 2,
   },
   {
-    id: 'template-3',
-    name: 'Template 3',
-    description: 'Coming soon.',
-    pages: 0,
-    disabled: true,
+    id: 'biffa-quotation',
+    name: 'Biffa Quotation',
+    description: 'Waste collection quotation with service details, contract terms, and pricing summary.',
+    pages: 1,
   },
 ];
 

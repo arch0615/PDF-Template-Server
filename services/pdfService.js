@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { config } from '../config.js';
 import { generateHtml } from '../templates/pdfTemplate.js';
 import { generateHtmlTemplate2 } from '../templates/template2.js';
+import { generateHtmlTemplate3 } from '../templates/template3.js';
 
 let browser = null;
 
@@ -30,6 +31,8 @@ export async function generatePdf(formData) {
   const templateId = formData._templateId;
   const html = templateId === 'first-mile-wtn'
     ? generateHtmlTemplate2(formData)
+    : templateId === 'biffa-quotation'
+    ? generateHtmlTemplate3(formData)
     : generateHtml(formData);
   const b = await getBrowser();
   const page = await b.newPage();
@@ -108,8 +111,11 @@ export async function generatePdf(formData) {
     });
   });
 
+  const isT3 = templateId === 'biffa-quotation';
   const pdfBytes = await page.pdf({
-    format: 'A4',
+    ...(isT3
+      ? { width: '250mm', height: '176mm' }
+      : { format: 'A4' }),
     printBackground: true,
     margin: { top: 0, right: 0, bottom: 0, left: 0 },
   });
