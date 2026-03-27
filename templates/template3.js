@@ -43,13 +43,13 @@ export function generateHtmlTemplate3(data) {
     overflow: hidden;
   }
 
-  /* Fixed-height sections — scaled to ~96% */
-  .s-header   { height: 15.04%; flex-shrink: 0; }
-  .s-letter   { height: 6.32%;  flex-shrink: 0; }
-  .s-info     { height: 13%;    flex-shrink: 0; }
-  .s-service  { height: 22%;    flex-shrink: 0; }
-  .s-pricing  { height: 22%;    flex-shrink: 0; }
-  .s-bottom   { height: 17%;    flex-shrink: 0; margin-top: auto; }
+  /* Fixed-height sections — matched to web form ratios */
+  .s-header   { height: 19.47%; flex-shrink: 0; }
+  .s-letter   { height: 9.18%;  flex-shrink: 0; }
+  .s-info     { height: 10.71%; flex-shrink: 0; }
+  .s-service  { height: 26.70%; flex-shrink: 0; }
+  .s-pricing  { height: 17.66%; flex-shrink: 0; }
+  .s-bottom   { height: 16.27%; flex-shrink: 0; margin-top: auto; }
 
   /* Header */
   .header {
@@ -59,24 +59,23 @@ export function generateHtmlTemplate3(data) {
     overflow: hidden;
   }
   .header-left {
-    display: flex; align-items: stretch; gap: 12px;
+    display: flex; align-items: stretch; align-self: stretch; gap: 16px;
   }
   .logo-col {
     flex-shrink: 0; display: flex; align-items: stretch;
   }
   .nw-logo {
-    background: transparent; color: #1a1a1a; font-size: 16px; font-weight: 900;
+    background: transparent; color: #1a1a1a; font-size: 18px; font-weight: 900;
     font-style: italic; padding: 10px 0;
     display: flex; align-items: center; line-height: 1.2;
-    min-height: 70px;
   }
   .title-col {
     display: flex; flex-direction: column; justify-content: space-between;
   }
-  .header-date { font-size: 10px; color: #555; }
-  .title-col-bottom {}
-  .quote-heading { font-size: 20px; font-weight: 900; color: #1a1a1a; margin: 0; }
-  .quote-ref { font-size: 12px; font-weight: 600; color: #555; }
+  .header-date { font-size: 12px; color: #555; }
+  .title-col-bottom { margin-top: auto; }
+  .quote-heading { font-size: 26px; font-weight: 900; color: #1a1a1a; margin: 0; }
+  .quote-ref { font-size: 15px; font-weight: 600; color: #555; }
 
   .header-right { display: flex; align-items: flex-start; gap: 10px; }
   .company-info { font-size: 9px; color: #555; line-height: 1.4; text-align: right; }
@@ -132,13 +131,16 @@ export function generateHtmlTemplate3(data) {
   /* Bottom */
   .bottom-row { display: flex; gap: 12px; align-items: stretch; }
   .ready-box {
-    background: #1a1a1a; color: white; padding: 12px 16px; font-size: 12px; font-weight: 700;
-    display: flex; align-items: center; white-space: nowrap; flex-shrink: 0;
+    background: #1a1a1a; color: white; padding: 10px 12px; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; white-space: nowrap;
+    flex: 0 0 16%;
   }
   .contact-box {
-    background: #d9d9d9; color: #1a1a1a; padding: 10px 16px;
-    width: 160px; flex-shrink: 0;
+    background: #d9d9d9; color: #1a1a1a; padding: 10px 14px;
+    overflow: hidden;
   }
+  .contact-phone { flex: 0 0 28%; }
+  .contact-email { flex: 0 0 40%; }
   .contact-title { font-size: 11px; font-weight: 700; margin-bottom: 2px; }
   .contact-highlight { font-size: 11px; font-weight: 700; color: #e31e24; text-decoration: underline; }
   .contact-sub { font-size: 9px; color: #1a1a1a; margin-top: 2px; line-height: 1.4; }
@@ -268,12 +270,12 @@ Price</th>
     <div class="sec">
       <div class="bottom-row">
         <div class="ready-box">Ready to set up<br>your account?</div>
-        <div class="contact-box">
+        <div class="contact-box contact-phone">
           <div class="contact-title">Freephone</div>
           <div class="contact-highlight">${d.freephone}</div>
           <div class="contact-sub">${freephoneLines}</div>
         </div>
-        <div class="contact-box">
+        <div class="contact-box contact-email">
           <div class="contact-title">E-Mail</div>
           <div class="contact-highlight">${d.email}</div>
           <div class="contact-sub">${emailLines}</div>
