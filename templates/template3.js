@@ -65,9 +65,9 @@ export function generateHtmlTemplate3(data) {
     flex-shrink: 0; display: flex; align-items: stretch;
   }
   .nw-logo {
-    background: #e31e24; color: white; font-size: 24px; font-weight: 900;
-    font-style: italic; padding: 14px 18px; border-radius: 4px;
-    display: flex; align-items: center; line-height: 1;
+    background: transparent; color: #1a1a1a; font-size: 16px; font-weight: 900;
+    font-style: italic; padding: 10px 0;
+    display: flex; align-items: center; line-height: 1.2;
     min-height: 70px;
   }
   .title-col {
@@ -152,7 +152,7 @@ export function generateHtmlTemplate3(data) {
     <div class="header">
       <div class="header-left">
         <div class="logo-col">
-          <div class="nw-logo">Nationwide</div>
+          <div class="nw-logo">Nationwide Waste &amp; Recycling Limited</div>
         </div>
         <div class="title-col">
           <div class="header-date">${d.quoteDate}</div>
@@ -165,10 +165,10 @@ export function generateHtmlTemplate3(data) {
       <div class="header-right">
         <div class="company-info">
           <strong>Company Information</strong>
-          Biffa Group Limited, Coronation Road,<br>
-          Cressex, High Wycombe, HP12 3TZ<br><br>
-          VAT No: 537 911 627<br>
-          Registration No: 06409675
+          Nationwide Waste &amp; Recycling Limited,<br>
+          28 Dunkirk Road, Southport PR8 4RQ<br><br>
+          VAT No: 513 1751 24<br>
+          Company No: 06745189
         </div>
         <div class="badge">
           <div class="tri-striped"></div>
