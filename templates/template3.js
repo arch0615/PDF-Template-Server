@@ -152,7 +152,7 @@ export function generateHtmlTemplate3(data) {
     <div class="header">
       <div class="header-left">
         <div class="logo-col">
-          <div class="nw-logo">Nationwide Waste &amp; Recycling Limited</div>
+          <div class="nw-logo">Nationwide Waste<br>&amp; Recycling Limited</div>
         </div>
         <div class="title-col">
           <div class="header-date">${d.quoteDate}</div>
