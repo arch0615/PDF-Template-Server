@@ -59,16 +59,28 @@ export function generateHtmlTemplate3(data) {
     overflow: hidden;
   }
   .header-left {
-    display: flex; align-items: stretch; align-self: stretch; gap: 16px;
+    display: flex; align-items: stretch; align-self: stretch; gap: 30px;
   }
   .logo-col {
-    flex-shrink: 0; display: flex; align-items: stretch;
+    flex-shrink: 0; display: flex; align-items: center;
   }
   .nw-logo {
-    background: transparent; color: #1a1a1a; font-size: 18px; font-weight: 900;
-    font-style: italic; padding: 10px 0;
-    display: flex; align-items: center; line-height: 1.2;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
   }
+  .nw-logo .logo-graphic { position: relative; width: 36px; height: 36px; }
+  .nw-logo .tri-striped {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+    background: repeating-linear-gradient(45deg, rgba(255,255,255,0.85) 0px, rgba(255,255,255,0.85) 1.5px, #8a8f94 1.5px, #8a8f94 3.5px), #8a8f94;
+  }
+  .nw-logo .tri-solid {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    background: #4f5152;
+  }
+  .nw-logo .logo-text { text-align: center; }
+  .nw-logo .logo-text strong { font-size: 9px; letter-spacing: 1.5px; display: block; color: #1a1a1a; }
+  .nw-logo .logo-text span { font-size: 5px; letter-spacing: 1px; text-transform: uppercase; color: #666; display: block; margin-top: 1px; }
   .title-col {
     display: flex; flex-direction: column; justify-content: space-between;
   }
@@ -154,7 +166,10 @@ export function generateHtmlTemplate3(data) {
     <div class="header">
       <div class="header-left">
         <div class="logo-col">
-          <div class="nw-logo">Nationwide Waste<br>&amp; Recycling Limited</div>
+          <div class="nw-logo">
+            <div class="logo-graphic"><div class="tri-striped"></div><div class="tri-solid"></div></div>
+            <div class="logo-text"><strong>NATIONWIDE WASTE &amp; RECYCLING</strong><span>RETHINKING THE FUTURE OF WASTE</span></div>
+          </div>
         </div>
         <div class="title-col">
           <div class="header-date">${d.quoteDate}</div>
