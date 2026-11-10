@@ -11,9 +11,14 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const allowedOrigins = process.env.CLIENT_URL
-  ? process.env.CLIENT_URL.split(',')
-  : ['http://localhost:5174'];
+const allowedOrigins = [
+  'http://localhost:5174',
+  'https://interactive-pdf-rho.vercel.app',
+  ...(process.env.CLIENT_URL || '')
+    .split(',')
+    .map((o) => o.trim().replace(/\/+$/, ''))
+    .filter(Boolean),
+];
 
 app.use(cors({
   origin: allowedOrigins,
