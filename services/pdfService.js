@@ -1,12 +1,28 @@
 import puppeteer from 'puppeteer-core';
 import chromium from '@sparticuz/chromium';
 import fs from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { PDFDocument } from 'pdf-lib';
 import { v4 as uuidv4 } from 'uuid';
 import { config } from '../config.js';
 import { generateHtml } from '../templates/pdfTemplate.js';
 import { generateHtmlTemplate2 } from '../templates/template2.js';
 import { generateHtmlTemplate3 } from '../templates/template3.js';
+import { generateHtmlTemplate4 } from '../templates/template4.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Static pages appended unchanged after Template 4's generated pages
+const TEMPLATE4_APPENDIX_PATH = join(__dirname, '..', 'templates', 'template4-appendix.pdf');
+
+async function appendPdf(pdfBytes, appendixPath) {
+  const doc = await PDFDocument.load(pdfBytes);
+  const appendix = await PDFDocument.load(fs.readFileSync(appendixPath));
+  const pages = await doc.copyPages(appendix, appendix.getPageIndices());
+  pages.forEach((p) => doc.addPage(p));
+  return doc.save();
+}
 
 let browser = null;
 
@@ -33,6 +49,8 @@ export async function generatePdf(formData) {
     ? generateHtmlTemplate2(formData)
     : templateId === 'biffa-quotation'
     ? generateHtmlTemplate3(formData)
+    : templateId === 'template-4'
+    ? generateHtmlTemplate4(formData)
     : generateHtml(formData);
   const b = await getBrowser();
   const page = await b.newPage();
@@ -112,7 +130,7 @@ export async function generatePdf(formData) {
   });
 
   const isT3 = templateId === 'biffa-quotation';
-  const pdfBytes = await page.pdf({
+  let pdfBytes = await page.pdf({
     ...(isT3
       ? { width: '250mm', height: '176mm' }
       : { format: 'A4' }),
@@ -121,6 +139,10 @@ export async function generatePdf(formData) {
   });
 
   await page.close();
+
+  if (templateId === 'template-4') {
+    pdfBytes = await appendPdf(pdfBytes, TEMPLATE4_APPENDIX_PATH);
+  }
 
   const filename = `completed_${uuidv4()}.pdf`;
   const outputPath = join(config.outputDir, filename);

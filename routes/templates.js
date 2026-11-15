@@ -21,6 +21,12 @@ const templates = [
     description: 'Waste collection quotation with service details, contract terms, and pricing summary.',
     pages: 1,
   },
+  {
+    id: 'template-4',
+    name: 'Template 4',
+    description: 'Copy of the Nationwide Waste & Recycling service agreement form.',
+    pages: 7,
+  },
 ];
 
 // GET /api/templates — list all templates

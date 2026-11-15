@@ -6,7 +6,10 @@
       "use": "@vercel/node",
       "config": {
         "maxLambdaSize": "50mb",
-        "maxDuration": 30
+        "maxDuration": 30,
+        "includeFiles": [
+          "templates/**/*.pdf"
+        ]
       }
     }
   ],
